@@ -39,12 +39,15 @@ export const MerchantAuthProvider: React.FC<MerchantAuthProviderProps> = ({ chil
   const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     
-    // Mock login para demonstração
-    if (email === 'teste1@teste.com' && password === '123') {
+    // Mock login para demonstração - aceita ambos os emails
+    const validEmails = ['teste1@teste.com', 'lojista@teste.com'];
+    const validPassword = '123';
+    
+    if (validEmails.includes(email.toLowerCase().trim()) && password === validPassword) {
       const mockMerchant: Merchant = {
         id: 'merchant_1',
         name: 'João Silva',
-        email: 'lojista@teste.com',
+        email: email.toLowerCase().trim(),
         phone: '(11) 99999-9999',
         businessName: 'Loja do João',
         cnpj: '12.345.678/0001-90',
