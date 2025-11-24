@@ -129,14 +129,7 @@ const MerchantDashboard: React.FC = () => {
                 className="flex items-center text-sm text-gray-700 hover:text-gray-900"
               >
                 <EyeIcon className="h-4 w-4 mr-1" />
-                Ver Perfil
-              </button>
-              <button
-                onClick={() => navigate('/merchant/settings')}
-                className="flex items-center text-sm text-gray-700 hover:text-gray-900"
-              >
-                <PencilIcon className="h-4 w-4 mr-1" />
-                Editar
+                Meu Perfil
               </button>
               <button
                 onClick={handleLogout}

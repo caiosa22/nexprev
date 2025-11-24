@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { MerchantAuthProvider, useMerchantAuth } from './contexts/MerchantAuthContext';
+import { AdminAuthProvider, useAdminAuth } from './contexts/AdminAuthContext';
 import { Header } from './components/Header';
 import BottomNav from './components/BottomNav';
 import HomePage from './pages/HomePage';
@@ -26,6 +27,11 @@ import MerchantCustomersPage from './pages/MerchantCustomersPage';
 import MerchantSearchUsersPage from './pages/MerchantSearchUsersPage';
 import MerchantOffersPage from './pages/MerchantOffersPage';
 import MerchantOfferCreatePage from './pages/MerchantOfferCreatePage';
+import MerchantProfilePage from './pages/MerchantProfilePage';
+
+// Admin Pages
+import AdminLoginPage from './pages/AdminLoginPage';
+import AdminDashboard from './pages/AdminDashboard';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -55,16 +61,31 @@ const MerchantProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ child
   return isAuthenticated ? <>{children}</> : <Navigate to="/merchant/login" />;
 };
 
+const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, loading } = useAdminAuth();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+  
+  return isAuthenticated ? <>{children}</> : <Navigate to="/admin/login" />;
+};
+
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { isAuthenticated: isMerchantAuthenticated } = useMerchantAuth();
   const location = useLocation();
   
-  // Verificar se a rota atual é do lojista
+  // Verificar se a rota atual é do lojista ou admin
   const isMerchantRoute = location.pathname.startsWith('/merchant');
+  const isAdminRoute = location.pathname.startsWith('/admin');
   
-  // Só exibir Header e BottomNav se for cliente autenticado e NÃO for rota do lojista
-  const showCustomerUI = isAuthenticated && !isMerchantRoute;
+  // Só exibir Header e BottomNav se for cliente autenticado e NÃO for rota do lojista ou admin
+  const showCustomerUI = isAuthenticated && !isMerchantRoute && !isAdminRoute;
 
   return (
     <div className="w-full bg-white font-sans min-h-screen">
@@ -153,6 +174,19 @@ const AppContent: React.FC = () => {
               <MerchantOfferCreatePage />
             </MerchantProtectedRoute>
           } />
+          <Route path="/merchant/profile" element={
+            <MerchantProtectedRoute>
+              <MerchantProfilePage />
+            </MerchantProtectedRoute>
+          } />
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/dashboard" element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          } />
         </Routes>
       </div>
       {showCustomerUI && <BottomNav />}
@@ -165,7 +199,9 @@ export default function App(): React.ReactElement {
     <Router>
       <AuthProvider>
         <MerchantAuthProvider>
-          <AppContent />
+          <AdminAuthProvider>
+            <AppContent />
+          </AdminAuthProvider>
         </MerchantAuthProvider>
       </AuthProvider>
     </Router>
