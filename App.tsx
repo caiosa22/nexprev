@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { MerchantAuthProvider, useMerchantAuth } from './contexts/MerchantAuthContext';
 import { Header } from './components/Header';
@@ -58,11 +58,18 @@ const MerchantProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ child
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { isAuthenticated: isMerchantAuthenticated } = useMerchantAuth();
+  const location = useLocation();
+  
+  // Verificar se a rota atual é do lojista
+  const isMerchantRoute = location.pathname.startsWith('/merchant');
+  
+  // Só exibir Header e BottomNav se for cliente autenticado e NÃO for rota do lojista
+  const showCustomerUI = isAuthenticated && !isMerchantRoute;
 
   return (
     <div className="w-full bg-white font-sans min-h-screen">
-      {isAuthenticated && <Header />}
-      <div className={`min-h-screen ${isAuthenticated ? 'pb-24' : ''}`}>
+      {showCustomerUI && <Header />}
+      <div className={`min-h-screen ${showCustomerUI ? 'pb-24' : ''}`}>
         <Routes>
           {/* Customer Routes */}
           <Route path="/login" element={<LoginPage />} />
@@ -148,7 +155,7 @@ const AppContent: React.FC = () => {
           } />
         </Routes>
       </div>
-      {isAuthenticated && <BottomNav />}
+      {showCustomerUI && <BottomNav />}
     </div>
   );
 };
