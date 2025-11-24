@@ -12,7 +12,7 @@ import {
   TagIcon,
   PencilIcon,
   CheckIcon,
-  XIcon
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 
 const MerchantProfilePage: React.FC = () => {
@@ -123,7 +123,7 @@ const MerchantProfilePage: React.FC = () => {
                     onClick={handleCancel}
                     className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
                   >
-                    <XIcon className="h-4 w-4 mr-2" />
+                    <XMarkIcon className="h-4 w-4 mr-2" />
                     Cancelar
                   </button>
                 </div>
