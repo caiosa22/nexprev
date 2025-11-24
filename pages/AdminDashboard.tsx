@@ -8,7 +8,7 @@ import {
   CurrencyDollarIcon,
   ChartBarIcon,
   ArrowRightOnRectangleIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   TagIcon,
   ShoppingCartIcon,
   UserGroupIcon,
@@ -194,7 +194,7 @@ const AdminDashboard: React.FC = () => {
                   <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
                   <p className="text-xs text-gray-500 mb-2">{stat.subtitle}</p>
                   <div className="flex items-center text-xs text-green-600">
-                    <TrendingUpIcon className="h-3 w-3 mr-1" />
+                    <ArrowTrendingUpIcon className="h-3 w-3 mr-1" />
                     {stat.trend}
                   </div>
                 </div>
@@ -240,7 +240,7 @@ const AdminDashboard: React.FC = () => {
               
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center">
-                  <TrendingUpIcon className="h-5 w-5 text-purple-500 mr-2" />
+                  <ArrowTrendingUpIcon className="h-5 w-5 text-purple-500 mr-2" />
                   <span className="text-sm font-medium text-gray-700">Crescimento Mensal</span>
                 </div>
                 <span className="text-sm font-bold text-gray-900">+12.5%</span>
